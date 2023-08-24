@@ -1,0 +1,17 @@
+{
+  "frontendFolder": "C:/Users/Emrah/eclipse-workspace/PostgreSQL/./frontend",
+  "themeFolder": "themes",
+  "themeResourceFolder": "C:/Users/Emrah/eclipse-workspace/PostgreSQL/./frontend/generated/jar-resources",
+  "staticOutput": "C:/Users/Emrah/eclipse-workspace/PostgreSQL/target/classes/META-INF/VAADIN/webapp/VAADIN/static",
+  "generatedFolder": "generated",
+  "statsOutput": "C:\\Users\\Emrah\\eclipse-workspace\\PostgreSQL\\target\\classes\\META-INF\\VAADIN\\config",
+  "frontendBundleOutput": "C:\\Users\\Emrah\\eclipse-workspace\\PostgreSQL\\target\\classes\\META-INF\\VAADIN\\webapp",
+  "devBundleOutput": "C:/Users/Emrah/eclipse-workspace/PostgreSQL/src/main/dev-bundle/webapp",
+  "devBundleStatsOutput": "C:/Users/Emrah/eclipse-workspace/PostgreSQL/src/main/dev-bundle/config",
+  "jarResourcesFolder": "C:/Users/Emrah/eclipse-workspace/PostgreSQL/./frontend/generated/jar-resources",
+  "themeName": "",
+  "clientServiceWorkerSource": "C:\\Users\\Emrah\\eclipse-workspace\\PostgreSQL\\target\\sw.ts",
+  "pwaEnabled": false,
+  "offlineEnabled": false,
+  "offlinePath": "'offline.html'"
+}
