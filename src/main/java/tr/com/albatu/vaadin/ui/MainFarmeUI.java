@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.vaadin.flow.component.grid.editor.Editor;
 import com.fasterxml.jackson.databind.introspect.TypeResolutionContext.Empty;
+import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 
@@ -61,23 +62,25 @@ public class MainFarmeUI extends VerticalLayout {
 
 		ListDataProvider<Category> getList = new ListDataProvider<Category>(list);
 		grid.setItems(getList);
-		Grid.Column<Category> idColumn = grid.addColumn(Category::getId).setHeader("#").setWidth("120px")
+		Grid.Column<Category> idColumn = grid.addColumn(Category::getId).setHeader("#").setAutoWidth(true)
 				.setFlexGrow(0);
 		Grid.Column<Category> categoryNameColumn = grid.addColumn(Category::getName).setHeader("Kategori Adı")
-				.setWidth("450px").setFlexGrow(0);
+				.setAutoWidth(true).setFlexGrow(0);
 
 		// var findBy = categoryDal.findById(0);
 		Grid.Column<Category> parentCategoryColumn = grid
 				.addColumn(p -> categorName(categoryDal.findById(p.getParentId()).orElse(null)))
-				.setHeader("Üst Kategori Adı").setWidth("450px").setFlexGrow(0);
+				.setHeader("Üst Kategori Adı").setAutoWidth(true).setFlexGrow(0);
 
 		Grid.Column<Category> editColumn = grid.addComponentColumn(Category -> {
 			Button editButton = new Button("Edit");
 			editButton.addClickListener(e -> {
 				if (editor.isOpen())
 					editor.cancel();
+				
 				grid.getEditor().editItem(Category);
 			});
+			editButton.addThemeVariants(ButtonVariant.LUMO_SUCCESS, ButtonVariant.LUMO_ERROR);
 			return editButton;
 		}).setWidth("405px").setFlexGrow(0);
 
@@ -131,6 +134,9 @@ public class MainFarmeUI extends VerticalLayout {
 			if (editor.isOpen())
 				editor.cancel();
 			var newItem = new Category();
+			newItem.setId(0);
+			newItem.setName(null);
+			newItem.setParentId(0);
 			getList.getItems().add(newItem);
 			getList.refreshAll();
 			grid.getEditor().editItem(newItem);
@@ -139,6 +145,21 @@ public class MainFarmeUI extends VerticalLayout {
 
 		Button saveButton = new Button("Save", e -> editor.save());
 		Button cancelButton = new Button(VaadinIcon.CLOSE.create(), e -> editor.cancel());
+		cancelButton.addClickListener(new ComponentEventListener<ClickEvent<Button>>() {
+			
+			@Override
+			public void onComponentEvent(ClickEvent<Button> event) {
+				
+				
+				List<Category> list = new ArrayList<Category>();
+				categoryDal.findAll().forEach(p -> list.add(p));
+
+				ListDataProvider<Category> getList = new ListDataProvider<Category>(list);
+				grid.setItems(getList);
+				grid.getDataProvider().refreshAll();
+			}
+		});
+		cancelButton.addThemeVariants(ButtonVariant.LUMO_ICON, ButtonVariant.LUMO_ERROR);
 		cancelButton.addThemeVariants(ButtonVariant.LUMO_ICON, ButtonVariant.LUMO_ERROR);
 		HorizontalLayout actions = new HorizontalLayout(saveButton, cancelButton);
 		actions.setPadding(false);
@@ -176,6 +197,7 @@ public class MainFarmeUI extends VerticalLayout {
 
 				if (editor.isOpen())
 					editor.cancel();
+					
 
 				List<Category> list = new ArrayList<Category>();
 				categoryDal.findAll().forEach(p -> list.add(p));
@@ -189,6 +211,7 @@ public class MainFarmeUI extends VerticalLayout {
 			}
 		});
 
+		grid.getPageSize();
 		add(insertRowButton, grid);
 
 	}
